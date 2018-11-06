@@ -1,0 +1,43 @@
+swagger: "2.0"
+
+info:
+  version: 0.0.1
+  title: API Landscape Discovery Hub
+  description: |
+    **WIP to be properly designed**
+    Web API Environment entrypoint for a list of links for decentralized API Landcsape discovery
+    
+
+schemes:
+  - http
+
+basePath: /
+paths:
+  /apis:
+    get:
+      consumes:
+        - "application/json"
+      produces:
+        # https://restfuljson.org/
+        - "application/vnd.restful+json"
+      summary: Gets APIs
+      description: Returns a list of APIs.
+      responses:
+        200:
+          description: A list of APIs
+          schema:
+            $ref: "#/definitions/Apis"
+
+definitions:
+  Apis:
+    type: array
+    items:
+      type: object
+      required:
+        - api_url
+      properties:
+        # https://restfuljson.org/
+        api_url:
+          type: string
+          example: "http://hub.apilandscape.org/"
+      
