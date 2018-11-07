@@ -12,6 +12,9 @@
       "provide": ["api-landscape"]
     }
   },
+  "scripts":{
+    "start": "api-landscape hub"
+  },
   "dependencies": {
     "api-landscape": "^0.0.1",
     "change-case": "^3.0.2",

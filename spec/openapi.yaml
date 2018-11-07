@@ -4,7 +4,7 @@ info:
   version: 0.0.1
   title: API Landscape Discovery Hub
   description: |
-    **WIP to be properly designed**
+    **WIP the design is to be properly designed**
     Web API Environment entrypoint for a list of links for decentralized API Landcsape discovery
     
 
@@ -19,7 +19,9 @@ paths:
         - "application/json"
       produces:
         # https://restfuljson.org/
-        - "application/vnd.restful+json"
+        # - "application/vnd.restful+json"
+        # FIXME This was way too presumptious, mock doesn't respond with proper content-type
+        - "application/json"
       summary: Gets APIs
       description: Returns a list of APIs.
       responses:

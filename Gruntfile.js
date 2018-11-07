@@ -7,6 +7,7 @@ var fs = require('fs');
 var path = require('path')
 var which = require('which');
 var packageJson = require('read-pkg').sync();
+var changeCase = require('change-case')
 
 var configuration = require('./configuration.js')
 
@@ -27,6 +28,7 @@ var prismAvailable = function(){
 module.exports = function(grunt) {
  grunt.initConfig({
     apiLandscape: configuration,
+    // FIXME it's sometimes creatign zombie processes when interrupted, I suspect Dredd --server
     connect: {
       server: {
         options: {
@@ -121,38 +123,61 @@ module.exports = function(grunt) {
       //TODO This needs to use env vars - at least for the port
       "dredd": {
         command: function(designName) {
-          console.log("dredd task argument")
-          console.log(designName)
-          if(designName){
-            freshDotenv = dotenv.parse(fs.readFileSync(".env", {encoding: 'utf-8'}))
-            
-            //Lookup already added API_HOSTS in current dotenv and remove them 
-            variablePattern = changeCase.constantCase(designName) + "_API_HOST"
-            
-            var keys = Object.keys(freshDotEnv)
-            var apiLandscapeKeys = keys.filter(function(key){
-              return key.indexOf(variablePattern) != -1
-            })
+          if(!designName){
+            throw new Error("exec:dredd:[designName] expected ")
+          } else {
+            // FIXME this is a dirty hack for now, find better way to tell dredd to start mock
+            // probably look to pakcage.json if this is a mock or service API Landscape component
+            if(designName != "mock") {
+              var freshDotenv = dotenv.parse(fs.readFileSync(".env", {encoding: 'utf-8'}))
+              
+              //Lookup already added API_HOSTS in current dotenv and remove them 
+              variablePattern = changeCase.constantCase(designName) + "_API_HOST"
+              
+              var keys = Object.keys(freshDotenv)
+              var apiLandscapeKeys = keys.filter(function(key){
+                return key.indexOf(variablePattern) != -1
+              })
 
-            if(apiLandscapeKeys.length > 0){
-              designNameApiLandscapeHostEnvVarKey = apiLandscapeKeys[0]
-              var servicePort = freshDotEnv[designNameApiLandscapeHostEnvVarKey]
-              grunt.log.writeln("Found env var key '" + envVarKeu+'" using port " + +".")
+              if(apiLandscapeKeys.length > 0){
+                designNameApiLandscapeHostEnvVarKey = apiLandscapeKeys[0]
+                // setting port here
+                var servicePort = freshDotenv[designNameApiLandscapeHostEnvVarKey]
+                grunt.log.writeln("Found env var key '" + designNameApiLandscapeHostEnvVarKey + 
+                  "' using port " + servicePort +".")
+
+                // setting start script here
+                if(cwdPkg['scripts']){
+                  if(cwdPkg['scripts']['start']){
+                    var serverStartCommand = "yarn run start --verbose --stack"
+                  }
+                }
+
+                if(!serverStartCommand){
+                  throw new Error("Property scripts/start not found. " +
+                      "If testing service providing design. Set it it package.json. ")
+                }
+
+              } else {
+                throw new Error("Env var not found for provided design '"+ designName +"'")
+              }
+            } else {
+              // fallback to mock
+              var port = 8000
+              var serverStartCommand = "yarn run api-landscape mock-start"
             }
-            
           }
-
-         
           
-          var port = servicePort || 8000
-          return "dredd " + 
+          var dreddCommand = "dredd " + 
           "http://localhost:" + port + "/discovery/spec/openapi.json " +
           "http://localhost:"+ port + " " +
-          "--server 'yarn run api-landscape start' " +
+          "--server '"+ serverStartCommand +"' " +
           //FIXME Introducing a possible race condition. On very slow systems it may take longer
           // than 10 seconds to start the server.
-          "--server-wait=10", 
-          }
+          "--server-wait=10"
+
+          return dreddCommand
+        }
       },
       
       
@@ -288,7 +313,7 @@ module.exports = function(grunt) {
     // 
   })
 
-  grunt.registerTask('start', function(){
+  grunt.registerTask('mock-start', function(){
     // TODO FIXME Start shouldn't watch
     // The problem is when the connect has keepalive option, the first one blocks and the discovery never ever starts
  
@@ -301,7 +326,7 @@ module.exports = function(grunt) {
   grunt.registerTask('design-test', function(){
     grunt.task.run([
       "build",
-      "exec:dredd"
+      "exec:dredd:mock"
     ])
   })
 
