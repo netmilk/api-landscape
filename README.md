@@ -136,6 +136,7 @@ X  - it reloads the browser automatically
 - ReDoc https://github.com/Rebilly/ReDoc
 - Stoplight Prism https://github.com/stoplightio/prism
 - Dredd http://github.com/apiaryio/dredd
+- Dredd Hooks http://dredd.org/en/latest/hooks-nodejs.html
 - Swagger CLI https://github.com/APIDevTools/swagger-cli
 - Swagger Praser https://github.com/APIDevTools/swagger-parser
 - Semantic Release https://github.com/semantic-release/semantic-release
