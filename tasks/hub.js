@@ -7,7 +7,11 @@ var app = express()
 
 // Harcoding he env var key, so the services don't need any tooling for extracting
 // of the configuration from the env vars. Relying on strong conventions.
-var port = process.env['API_LANDSCAPE_API_HOST'].split(":")[1]
+if(process.env['API_LANDSCAPE_API_HOST']){
+  var port = process.env['API_LANDSCAPE_API_HOST'].split(":")[1]
+} else {
+  var port = "8116" // osmdesatjednasestnact :)
+}
 
 // This is API Landscape Discovery hub for the local dotenv driven environment management
 // This will be extracting from "now ls" in ZEIT or from environments like KONG,
