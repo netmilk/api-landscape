@@ -173,6 +173,7 @@ module.exports = function(grunt) {
           "http://localhost:" + servicePort + "/discovery/spec/openapi.json " +
           "http://localhost:"+ servicePort + " " +
           "--server '"+ serverStartCommand +"' " +
+          "--hookfiles=./dredd-hooks.js " +
           //FIXME Introducing a possible race condition. On very slow systems it may take longer
           // than 10 seconds to start the server.
           "--server-wait=10"
