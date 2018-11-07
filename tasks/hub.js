@@ -27,10 +27,8 @@ module.exports = function(grunt){
       ])
     })
 
-    app.get('/discovery/spec/openapi.json', function(req, res){
-      spec = JSON.parse(fs.readFileSync('./build/spec/openapi.json', {encoding: 'utf-8'}))
-      res.json(spec)
-    })
+    // FIXME both strings should come from the configuration
+    app.use('/discovery', express.static('build'))
 
     app.get('/apis', function(req, res){
       console.log("hit")
