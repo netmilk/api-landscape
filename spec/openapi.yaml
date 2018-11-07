@@ -30,7 +30,6 @@ paths:
             content-type:   
               type: string
               default: application/json; charset=utf-8
-              example: application/json; charset=utf-8
           description: A list of APIs
           schema:
             $ref: "#/definitions/Apis"
