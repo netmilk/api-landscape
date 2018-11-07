@@ -19,7 +19,7 @@ if(process.env['API_LANDSCAPE_API_HOST']){
 module.exports = function(grunt){
   grunt.registerTask('hub', function(){
     done = this.async()
-
+    //FIXME documetn
     app.get('/', function(req, res){
       res.json([
         {"apis_url": "/apis"},
@@ -28,6 +28,7 @@ module.exports = function(grunt){
     })
 
     // FIXME both strings should come from the configuration
+    // FIXME document in the API Spec or as Dredd hooks
     app.use('/discovery', express.static('build'))
 
     app.get('/apis', function(req, res){

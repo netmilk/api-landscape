@@ -123,7 +123,6 @@ X  - it reloads the browser automatically
 - yarn https://yarnpkg.com/en/
 - yarn workspaces https://yarnpkg.com/lang/en/docs/workspaces/
 - package.json https://docs.npmjs.com/files/package.json
-- restful json https://restfuljson.org/
 - grunt https://gruntjs.com/
 - grunt-contrib-watch https://github.com/gruntjs/grunt-contrib-watch#optionslivereload
 - grunt-contrib-connect https://github.com/gruntjs/grunt-contrib-connect
@@ -133,8 +132,10 @@ X  - it reloads the browser automatically
 - dotenv https://www.npmjs.com/package/dotenv
 - dotenv edit https://github.com/stevenvachon/edit-dotenv
 - portastic https://www.npmjs.com/package/portastic
+- openapi 2.0 https://github.com/OAI/OpenAPI-Specification/blob/master/versions/2.0.md
 - ReDoc https://github.com/Rebilly/ReDoc
 - Stoplight Prism https://github.com/stoplightio/prism
+- restful json https://restfuljson.org/
 - Dredd http://github.com/apiaryio/dredd
 - Dredd Hooks http://dredd.org/en/latest/hooks-nodejs.html
 - Swagger CLI https://github.com/APIDevTools/swagger-cli
