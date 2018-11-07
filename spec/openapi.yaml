@@ -16,16 +16,21 @@ paths:
   /apis:
     get:
       consumes:
-        - "application/json"
+        - "application/json; charset=utf-8"
       produces:
         # https://restfuljson.org/
         # - "application/vnd.restful+json"
         # FIXME This was way too presumptious, mock doesn't respond with proper content-type
-        - "application/json"
+        - "application/json; charset=utf-8"
       summary: Gets APIs
       description: Returns a list of APIs.
       responses:
         200:
+          headers:
+            content-type:   
+              type: string
+              default: application/json; charset=utf-8
+              example: application/json; charset=utf-8
           description: A list of APIs
           schema:
             $ref: "#/definitions/Apis"

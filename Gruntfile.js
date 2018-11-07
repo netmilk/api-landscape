@@ -142,7 +142,8 @@ module.exports = function(grunt) {
               if(apiLandscapeKeys.length > 0){
                 designNameApiLandscapeHostEnvVarKey = apiLandscapeKeys[0]
                 // setting port here
-                var servicePort = freshDotenv[designNameApiLandscapeHostEnvVarKey]
+                var serviceHost = freshDotenv[designNameApiLandscapeHostEnvVarKey]
+                var servicePort = serviceHost.split(":")[1]
                 grunt.log.writeln("Found env var key '" + designNameApiLandscapeHostEnvVarKey + 
                   "' using port " + servicePort +".")
 
@@ -163,14 +164,14 @@ module.exports = function(grunt) {
               }
             } else {
               // fallback to mock
-              var port = 8000
+              var servicePort = 8000
               var serverStartCommand = "yarn run api-landscape mock-start"
             }
           }
           
           var dreddCommand = "dredd " + 
-          "http://localhost:" + port + "/discovery/spec/openapi.json " +
-          "http://localhost:"+ port + " " +
+          "http://localhost:" + servicePort + "/discovery/spec/openapi.json " +
+          "http://localhost:"+ servicePort + " " +
           "--server '"+ serverStartCommand +"' " +
           //FIXME Introducing a possible race condition. On very slow systems it may take longer
           // than 10 seconds to start the server.
