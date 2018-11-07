@@ -263,11 +263,13 @@ module.exports = function(grunt) {
     ])
   });
 
-  grunt.registerTask('dev', function(){
+  grunt.registerTask('dev', function(designName){
     grunt.task.run([
       'build',
       'exec:mock-stop',
-      'exec:mock-start',
+      // the :design part is important, it runs mock for the builded spec from /build
+      // unless it would look into ./api-landscape/consume/:designName
+      'exec:mock-start:design',  
       'configureProxies:server',
       'connect',
       'watch'
@@ -306,8 +308,9 @@ module.exports = function(grunt) {
   grunt.registerTask('virtualize', function(){
     // THIS SOLVES THE NAMING DILEMA! AND INVALIDATING CACHES TOO!
     // assign free ports to all **consumed** services
-    // runs a local mini API Discovery hub exposing the local provided API hosts
     // mocks should listen on these ports
+    // run a local mini API Discovery hub exporting the local provided API hosts
+
     // clients (in the service) should configure themselves to use these port
     // assign free ports to all **provided** services (this should be 3000 and increments)
     // service providing the design name should always pick it up from the local environment and should run on that port 
@@ -315,12 +318,16 @@ module.exports = function(grunt) {
     // 
   })
 
-  grunt.registerTask('mock-start', function(){
+  grunt.registerTask('mock-start', function(designName){
     // TODO FIXME Start shouldn't watch
     // The problem is when the connect has keepalive option, the first one blocks and the discovery never ever starts
  
     grunt.task.run([
-     'dev'
+      'exec:mock-stop',
+      'exec:mock-start:' + designName,
+      'configureProxies:server',
+      'connect',
+      'watch'
     ])
   })
 
