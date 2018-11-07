@@ -6,13 +6,15 @@
   "author": "Adam Kliment <adam@netmilk.net>",
   "license": "MIT",
   "bin": "./bin/api-landscape.js",
-  "api-landscape":{
+  "api-landscape": {
     "design": true,
     "service": {
-      "provide": ["api-landscape"]
+      "provide": [
+        "api-landscape"
+      ]
     }
   },
-  "scripts":{
+  "scripts": {
     "start": "api-landscape hub"
   },
   "dependencies": {
@@ -20,6 +22,7 @@
     "change-case": "^3.0.2",
     "dotenv": "^6.1.0",
     "edit-dotenv": "^1.0.4",
+    "express-http-proxy": "^1.5.0",
     "freeport": "^1.0.5",
     "grunt": "^1.0.3",
     "grunt-connect-proxy": "^0.2.0",

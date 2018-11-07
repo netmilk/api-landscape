@@ -92,22 +92,44 @@ module.exports = function(grunt) {
       },
 
       //Start mock
-      "mock-start": {
-        command: function() {
-          var params = "mock -p 3001 --spec build/spec/openapi.json --debug &"
+      "mock-backend-start": {
+        command: function(designName) {
+          console.log(designName)
+          if(designName == "design"){
+            // if mocking an API Landscape Design component
+            var mockPort = 8117
+            var specDir = "build/spec"
+          } else {
+            // TODO FIXME Now supporting only on mock, whem more sopported, a DOT ENV VAR port lookup
+            // will happen here. Or even better the mock will have the discovery endpoint in-built
+            var mockPort = 3001
+            // if mocking consumed design in the Service API Landscape component
+            // TODO the path segments should be probably configurable
+            var specDir = "api-landscape/consumed/" + designName
+            if(!fs.existsSync(specDir)){
+              throw("The dir" + specDir + " for the consumed design doesn't exist. ")
+            }
+          }
+        
           if(! prismAvailable()){ 
-            var cmd = "docker run --name prism-mock -v `pwd`/build:/build -p 3001:3001 stoplight/prism";
+            var paramSpecPath = "spec/openapi.json"
+            var params = "mock -p " + mockPort + "  --spec " + paramSpecPath + " --debug &"
+            var cmd = "docker run --name prism-mock -v `pwd`/"+ specDir +":/spec -p " + 
+              mockPort + ":" + mockPort + " stoplight/prism";
           } else{
+            var paramSpecPath = path.join(spedDir, "openapi.json")
+            var params = "mock -p " + mockPort + "  --spec " + specPath + " --debug &" 
             var cmd = "prism";
           }
 
           var fullCommand = cmd + " " + params;
+          console.log(fullCommand)
           return fullCommand;
         },
       },
       
       //Stop mock
-      "mock-stop": {
+      "mock-backend-stop": {
         command: function(){
           if(! prismAvailable()){
             var cmd = "docker rm -f prism-mock"
@@ -129,6 +151,9 @@ module.exports = function(grunt) {
             // FIXME this is a dirty hack for now, find better way to tell dredd to start mock
             // probably look to pakcage.json if this is a mock or service API Landscape component
             if(designName != "mock") {
+
+              /***** DOT ENV VAR LOOKUP *****/
+              // TODO DRY this
               var freshDotenv = dotenv.parse(fs.readFileSync(".env", {encoding: 'utf-8'}))
               
               //Lookup already added API_HOSTS in current dotenv and remove them 
@@ -162,10 +187,12 @@ module.exports = function(grunt) {
               } else {
                 throw new Error("Env var not found for provided design '"+ designName +"'")
               }
+              /***** DOTENV VAR LOOKUP END *****/
+
             } else {
               // fallback to mock
               var servicePort = 8000
-              var serverStartCommand = "yarn run api-landscape mock-start"
+              var serverStartCommand = "yarn run api-landscape mock-start:design"
             }
           }
           
@@ -237,8 +264,8 @@ module.exports = function(grunt) {
         files: ['spec/**/*', 'package.json'],
         tasks: [
           'build',
-          'exec:mock-stop',
-          'exec:mock-start'
+          'exec:mock-backend-stop',
+          'exec:mock-backend-start'
         ]
       },
 
@@ -263,15 +290,15 @@ module.exports = function(grunt) {
     ])
   });
 
-  grunt.registerTask('dev', function(designName){
+  grunt.registerTask('design-develop', function(designName){
     grunt.task.run([
       'build',
-      'exec:mock-stop',
+      'exec:mock-backend-stop',
+
       // the :design part is important, it runs mock for the builded spec from /build
       // unless it would look into ./api-landscape/consume/:designName
-      'exec:mock-start:design',  
-      'configureProxies:server',
-      'connect',
+      'exec:mock-backend-start:design',
+      'mock-frontend:design',
       'watch'
     ])
   })
@@ -323,11 +350,9 @@ module.exports = function(grunt) {
     // The problem is when the connect has keepalive option, the first one blocks and the discovery never ever starts
  
     grunt.task.run([
-      'exec:mock-stop',
-      'exec:mock-start:' + designName,
-      'configureProxies:server',
-      'connect',
-      'watch'
+      'exec:mock-backend-stop',
+      'exec:mock-backend-start:' + designName,
+      'mock-frontend:' + designName
     ])
   })
 

@@ -19,7 +19,7 @@ if(process.env['API_LANDSCAPE_API_HOST']){
 module.exports = function(grunt){
   grunt.registerTask('hub', function(){
     done = this.async()
-    //FIXME documetn
+    //FIXME document in API Spec
     app.get('/', function(req, res){
       res.json([
         {"apis_url": "/apis"},

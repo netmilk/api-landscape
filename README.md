@@ -126,6 +126,8 @@ X  - it reloads the browser automatically
 - grunt https://gruntjs.com/
 - grunt-contrib-watch https://github.com/gruntjs/grunt-contrib-watch#optionslivereload
 - grunt-contrib-connect https://github.com/gruntjs/grunt-contrib-connect
+- express
+- express-http-proxy
 - grunt-exec https://github.com/jharding/grunt-exec
 - livereload https://github.com/gruntjs/grunt-contrib-watch/blob/master/docs/watch-examples.md#enabling-live-reload-in-your-html
 - change case https://github.com/blakeembrey/change-casec
