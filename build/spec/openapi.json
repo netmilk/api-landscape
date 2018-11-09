@@ -4,7 +4,9 @@
     "version": "0.0.1",
     "title": "API Landscape Discovery Hub",
     "description": "**WIP the design is to be properly designed**\nWeb API Environment entrypoint for a list of links for decentralized API Landcsape discovery\n",
-    "x-lifecycle": "api-landscape"
+    "x-lifecycle": {
+      "name": "api-landscape"
+    }
   },
   "schemes": [
     "http"
@@ -44,6 +46,13 @@
                   }
                 }
               }
+            },
+            "examples": {
+              "application/json": [
+                {
+                  "api_url": "http://localhost:3000/"
+                }
+              ]
             }
           }
         }

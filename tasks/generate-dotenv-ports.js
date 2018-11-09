@@ -7,7 +7,7 @@ var path = require('path')
 
 
 module.exports = function(grunt){
-  grunt.registerTask('generate-dotenv-ports', function(){
+  grunt.registerTask('generate-dotenv-hosts', function(){
     // locally, by default there are no alternative fqdns available other than localhost
     // unless thinkering with /etc/hosts or local DNS so the virtual fqdns must be emulated
     // by diferent ports on localhost

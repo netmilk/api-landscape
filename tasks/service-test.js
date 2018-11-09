@@ -11,7 +11,7 @@ module.exports = function(grunt){
     // - runs the tests
     grunt.task.run([
       'link',
-      'generate-dotenv-ports',
+      'generate-dotenv-hosts',
       'exec:dredd:' + designName
     ])
     

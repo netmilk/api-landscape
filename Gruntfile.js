@@ -11,9 +11,6 @@ var changeCase = require('change-case')
 
 var configuration = require('./configuration.js')
 
-// TODO: Conventions for environment variables
-var PORT = parseInt(process.env['SERVICE_SELF_PORT']) || 8000;
-
 // TODO: Conventions for the package.json API metadata namesapce
 // Suggestion: #/api/designName and fallback to package name 
 var DESIGN_NAME = packageJson['name'];
@@ -28,47 +25,6 @@ var prismAvailable = function(){
 module.exports = function(grunt) {
  grunt.initConfig({
     apiLandscape: configuration,
-    // FIXME it's sometimes creatign zombie processes when interrupted, I suspect Dredd --server
-    connect: {
-      server: {
-        options: {
-          port: PORT,
-          debug: true,
-          middleware: function (connect, options, middlewares) {
-            middlewares.unshift(require('grunt-connect-proxy/lib/utils').proxyRequest);
-            return middlewares;
-          }          
-        },
-        proxies: [
-          {
-            // TODO configuration and conventions for discovery massivelly needed
-            context: "/discovery",
-            host: "localhost",
-            port: 3002,
-            rewrite: { 
-              '^/discovery': '',
-            }
-          },
-          {
-            context: "/",
-            host: "localhost",
-            port: 3001
-          }
-         
-        ]
-      },
-
-      discovery: {
-        options: {
-          //confusion alert: 'build' as in the directory - not the grunt task 
-          base: 'build',
-          port: 3002,
-          debug: true,   
-//          keepalive: true
-        }
-      }
-    },
-
     // TODO: Performance! I'd like to see this rewritten using JS API of everything
     exec: { 
       validate: {
@@ -100,17 +56,21 @@ module.exports = function(grunt) {
             var mockPort = 8117
             var specDir = "build/spec"
           } else {
-            // TODO FIXME Now supporting only on mock, whem more sopported, a DOT ENV VAR port lookup
+            // TODO FIXME Now supporting only one mock, whem more supported DOT ENV VAR port lookup
             // will happen here. Or even better the mock will have the discovery endpoint in-built
-            var mockPort = 3001
+            // and ther won't be any mock-backend and mock-frontend
+            var mockPort = 8117
             // if mocking consumed design in the Service API Landscape component
             // TODO the path segments should be probably configurable
-            var specDir = "api-landscape/consumed/" + designName
+            var specDir = "api-landscape/consume/" + designName
             if(!fs.existsSync(specDir)){
-              throw("The dir" + specDir + " for the consumed design doesn't exist. ")
+              throw(new Error("The dir '" + specDir + "' for the consumed design doesn't exist. "))
             }
           }
-        
+
+          grunt.log.writeln("Mocking API Design conponent in: " + specDir)
+
+
           if(! prismAvailable()){ 
             var paramSpecPath = "spec/openapi.json"
             var params = "mock -p " + mockPort + "  --spec " + paramSpecPath + " --debug &"
@@ -123,7 +83,6 @@ module.exports = function(grunt) {
           }
 
           var fullCommand = cmd + " " + params;
-          console.log(fullCommand)
           return fullCommand;
         },
       },
@@ -142,7 +101,10 @@ module.exports = function(grunt) {
         exitCode: [0,1]
       },
       
-      //TODO This needs to use env vars - at least for the port
+      //TODO This needs to use env vars - at least for the port from API_HOST
+      //FIXME ^^^ This is wrong, Dredd is client and it should use API_ENTRYPOINT
+      //FUXNE ^^^ Well not entirely, Dredd should use API_ENTRYPOINT, but Dredd shuold run 
+      // the server on the API_HOST :) WOOF
       "dredd": {
         command: function(designName) {
           if(!designName){
@@ -305,7 +267,7 @@ module.exports = function(grunt) {
 
 
 
-  // this is used when configuring clients (plugging them into an environment)
+  /* this is used when configuring clients (plugging them into an environment)
   grunt.registerTask('discover', function(){
     // discover API design (and version) in the API Landscape
     // if no params it reads the API_DISCOVERY_ENTRYPOINT and dumps the map of the landscape 
@@ -320,7 +282,7 @@ module.exports = function(grunt) {
     // build the API Landscape map (cache, lockfile :), save it to api-landscape
     // if found return URL
   })
-
+  
   // Freaking Chicken Egg problem
   // - is the service first runnning and then exposes entrypoint and that determines its port
   // - 
@@ -344,7 +306,7 @@ module.exports = function(grunt) {
     // tag - design name to hostname,fqdn/port/entrypoint resolution client
     // 
   })
-
+  */
   grunt.registerTask('mock-start', function(designName){
     // TODO FIXME Start shouldn't watch
     // The problem is when the connect has keepalive option, the first one blocks and the discovery never ever starts

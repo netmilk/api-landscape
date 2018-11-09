@@ -35,12 +35,20 @@ module.exports = function(grunt){
     
     apiSpec = JSON.parse(fs.readFileSync(specPath, {encoding: 'utf-8'}))
 
-    if(!apiSpec['info']){
+    if(! apiSpec['info']){
       apiSpec['info'] = {};
     };
-
-    apiSpec['info']['x-lifecycle'] = cwdPkg['name'];
+    
+    // Sprinkle the package.json into the API spec
     apiSpec['info']['version'] = cwdPkg['version']
+
+    if(! apiSpec['info']['x-lifecycle']){
+      apiSpec['info']['x-lifecycle'] = {}
+    }
+
+    console.log("booo")
+    // Sprinkle package.json package name into the API sapc
+    apiSpec['info']['x-lifecycle']['name'] = cwdPkg['name'];
 
     fs.writeFileSync(specPath, JSON.stringify(apiSpec, null, 2))
     done()

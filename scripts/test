@@ -1,0 +1,14 @@
+#!/bin/bash
+
+docker rm -f prism-mock
+killall grunt
+yarn run grunt design-test --verbose --stack
+
+docker rm -f prism-mock
+killall grunt
+yarn run grunt service-test:api-landscape --verbose --stack
+
+docker rm -f prism-mock
+killall grunt
+yarn run grunt design-develop --verbose --stack
+

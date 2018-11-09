@@ -98,7 +98,7 @@ module.exports = function(grunt){
 
     // Find consumed dependencies
     if(Array.isArray(consume)){
-      var len = comsume.length
+      var len = consume.length
       for(var index = 0; index < len; index++){ 
         var designName = consume[index];
         //TODO reevaluate if this should be in dependencies and not dev dependenceis

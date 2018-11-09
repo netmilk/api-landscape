@@ -9,13 +9,15 @@ var app = express()
 // of the configuration from the env vars. Relying on strong conventions.
 if(process.env['API_LANDSCAPE_API_HOST']){
   var port = process.env['API_LANDSCAPE_API_HOST'].split(":")[1]
+  var hubHost = process.env['API_LANDSCAPE_API_HOST']
 } else {
   var port = "8116" // osmdesatjednasestnact :)
+  var hubHost = "localhost:8116"
 }
 
 // This is API Landscape Discovery hub for the local dotenv driven environment management
 // This will be extracting from "now ls" in ZEIT or from environments like KONG,
-// Heroku, Consul, API Managements etc...
+// Heroku, Consul, API Managements, K8S, Foreman, etc...
 module.exports = function(grunt){
   grunt.registerTask('hub', function(){
     done = this.async()
@@ -62,7 +64,9 @@ module.exports = function(grunt){
     })
 
     app.listen(port, function() {
-      console.log("API Landscape Discovery Hub listening on port "+ port + "!")
+      grunt.log.writeln("API Landscape Discovery Hub listening on port "+ port + "!")
+      grunt.log.writeln("You can now: \n" +
+          "$ export API_ENVIRONMENT_DISCOVERY_ENTRYPOINT=" + hubHost)
     })
 
 

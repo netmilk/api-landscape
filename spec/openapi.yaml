@@ -33,6 +33,9 @@ paths:
           description: A list of APIs
           schema:
             $ref: "#/definitions/Apis"
+          examples:
+            application/json:
+              - api_url: "http://localhost:3000/"
 
 definitions:
   Apis:

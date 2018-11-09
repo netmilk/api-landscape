@@ -44,7 +44,7 @@ module.exports = function(grunt){
       /***** DOTENV VAR LOOKUP END *****/
     }
 
-    // FIXME this sucks api-landscape link should probably link the entire /build
+    // FIXME this sucks: api-landscape link should probably link the entire /build
     // not only /build/spec 
     if(designName == "design"){
       var consumedSpecDir = 'build'
@@ -59,11 +59,11 @@ module.exports = function(grunt){
     app.use('/', expressProxy('localhost:' + mockBackendPort))
 
     app.listen(mockFrontendPort, function() {
-      if(! designName == "design"){
-        console.log("API Landscape Consumed Service Mock Frontend for design '"+ designName +"'"+
+      if(designName != "design"){
+        console.log("API Landscape Consumed Service Mock Frontend for design '"+ designName +"' "+
           "listening on port "+ mockFrontendPort  + "!")
-      }else{
-         console.log("API Landscape Design Component Mock Frontend for design "+
+      } else {
+         console.log("API Landscape Design Component Mock Frontend"+
           "listening on port "+ mockFrontendPort  + "!")     
       }
     })
