@@ -12,3 +12,13 @@ docker rm -f prism-mock
 killall grunt
 yarn run grunt design-develop --verbose --stack
 
+
+# Service testing and local tdd
+# =============== 
+
+# sign up to the consumed design, virtualize dependencies hosts, mock, export through hub, discover, export the entrypoint and develop against it in code using the environement variable, run service tests - unit or e2ew
+
+# register provided design, assing provided service host, export throught hub and discover, export and dredd shiuld pick up the entrypoint from the env vars
+
+# 
+
