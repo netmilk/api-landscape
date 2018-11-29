@@ -1,11 +1,11 @@
 # Summary
 
 * [Introduction](README.md)
-* [Building Blocks](components.md)
-* [Conventions and Key Concepts](conventions.md)
-* [Infrastructure](infrastructure.md)
+* [Concepts and Patterns](components.md)
+* [Conventions](conventions.md)
+* [Support Systems](infrastructure.md)
 * [Tooling and Formats](tooling.md)
 * [Getting started](getting-started.md)
 * [Tutorials](chapter1.md)
-* Examples
+* [Examples](examples.md)
 
