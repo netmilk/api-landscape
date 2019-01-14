@@ -1,9 +1,9 @@
-# DO NOT USE; massively WIP
+# DO NOT USE; Research project
 
 [![Build Status](https://travis-ci.com/netmilk/api-design-lifecycle-skeleton.svg?branch=master)](https://travis-ci.com/netmilk/api-design-lifecycle-skeleton)
 
+# API Landscape Lifecycle Tooling
 
-# API Design Lifecycle Skeleton
 - Human Entrypoint TODO
 - Machine Discovery
 
