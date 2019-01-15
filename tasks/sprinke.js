@@ -46,7 +46,6 @@ module.exports = function(grunt){
       apiSpec['info']['x-lifecycle'] = {}
     }
 
-    console.log("booo")
     // Sprinkle package.json package name into the API sapc
     apiSpec['info']['x-lifecycle']['name'] = cwdPkg['name'];
 

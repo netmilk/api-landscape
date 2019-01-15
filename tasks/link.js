@@ -31,15 +31,16 @@ module.exports = function(grunt){
     }
 
     if(! cwdPkg[pkgNamespace]['service']){
-      return done(new Error("Not a Good API 'service' component. /goodapi/service not found" + 
+      return done(new Error("Not an API Landscape 'service' component. /api-landscape/service not found" + 
       " in package.json"))
     }
 
     var provide = cwdPkg[pkgNamespace]['service']['provide'];
+    //console.log(provide);
     var consume = cwdPkg[pkgNamespace]['service']['consume'];
     
     if(provide == false && consume == false) {
-      grunt.log.writeln("No API designs to 'provide' or 'consume' under the 'goodapi' " +     
+      grunt.log.writeln("No API designs to 'provide' or 'consume' under the 'api-landscape' " +     
       "property in package.json. Doing nothing.")
       return done()
     }
@@ -85,8 +86,8 @@ module.exports = function(grunt){
           designName +"'. Try installing it or debug 'require.resolve('" + designName + "')'"))
         } 
 
-        console.log("module path")
-        console.log("modulePath")
+        //console.log("module path")
+        //console.log("modulePath")
 
         moduleSpecPath = path.resolve(path.join(modulePath, '/build/spec/'))
         localSpecPath = path.resolve(path.join('api-landscape','provide', designName))

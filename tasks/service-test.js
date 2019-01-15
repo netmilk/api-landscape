@@ -10,10 +10,18 @@ module.exports = function(grunt){
     // - dredd fetches the contract from the discovery endpoint
     // - runs the tests
     grunt.task.run([
-      'link',
-      'generate-dotenv-hosts',
+      //'link',
+      //'generate-dotenv-hosts'
       'exec:dredd:' + designName
     ])
-    
+
+  })
+  
+  grunt.registerTask("link-and-dotenv", function(){
+     grunt.task.run([
+      'link',
+      'generate-dotenv-hosts'
+      //'exec:dredd:' + designName
+    ])
   })
 }

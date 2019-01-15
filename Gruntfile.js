@@ -133,8 +133,9 @@ module.exports = function(grunt) {
                 var servicePort = serviceHost.split(":")[1]
                 grunt.log.writeln("Found env var key '" + designNameApiLandscapeHostEnvVarKey + 
                   "' using port " + servicePort +".")
-
+  
                 // setting start script here
+                var cwdPkg = JSON.parse(fs.readFileSync('package.json', {encoding: 'utf-8'}));
                 if(cwdPkg['scripts']){
                   if(cwdPkg['scripts']['start']){
                     var serverStartCommand = "yarn run start --verbose --stack"
