@@ -1,6 +1,6 @@
 {
   "name": "api-landscape",
-  "version": "0.0.2",
+  "version": "0.1.2",
   "description": "API Landscape CLI",
   "main": "index.js",
   "author": "Adam Kliment <adam@netmilk.net>",
@@ -21,7 +21,7 @@
     "start": "api-landscape hub"
   },
   "dependencies": {
-    "api-landscape": "^0.0.2",
+    "api-landscape": "^0.1.2",
     "async": "^2.6.1",
     "change-case": "^3.0.2",
     "dotenv": "^6.1.0",
