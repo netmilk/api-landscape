@@ -122,6 +122,7 @@ X  - it reloads the browser automatically
 # References
 - yarn https://yarnpkg.com/en/
 - yarn workspaces https://yarnpkg.com/lang/en/docs/workspaces/
+- yarn workspaces with git submodules https://blog.nrwl.io/dev-workflow-using-git-submodules-and-yarn-workspaces-14fd06c07964
 - package.json https://docs.npmjs.com/files/package.json
 - grunt https://gruntjs.com/
 - grunt-contrib-watch https://github.com/gruntjs/grunt-contrib-watch#optionslivereload
